@@ -10,7 +10,7 @@ import docclean
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser("Training Script for DocClea",
+    parser = argparse.ArgumentParser("Training Script for DocClean",
                                      formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-t', '--type', help='Which model to train', choices=['cycle_gan', 'autoencoder'],
                         required=True, type=str)
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     parser.add_argument('-d', '--dirty_books_dir', help="Directory containing dirty images", required=False,
                         default=None)
     parser.add_argument('-e', '--epochs', help='Number of epochs to train for', type=int, default=100, required=False)
-    parser.add_argument('-b', '--batch_size', help='Batch size', type=int, default=16, required=false)
+    parser.add_argument('-b', '--batch_size', help='Batch size', type=int, default=16, required=False)
 
     args = parser.parse_args()
 
