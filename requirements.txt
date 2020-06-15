@@ -6,3 +6,4 @@ streamlit
 matplotlib
 pyyaml
 h5py
+keras-autodoc
