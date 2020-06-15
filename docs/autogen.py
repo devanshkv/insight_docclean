@@ -1,3 +1,5 @@
+import shutil
+
 from keras_autodoc import DocumentationGenerator
 
 pages = {
@@ -5,11 +7,11 @@ pages = {
         "docclean.autoencoder.Autoencoder",
         "docclean.autoencoder.Autoencoder.build_model",
         "docclean.autoencoder.Autoencoder.train_model"
-    ]
+    ],
     'CycleGAN.md': [
         "docclean.cycle_gan.CycleGan",
         "docclean.cycle_gan.CycleGan.train"
-    ]
+    ],
     'Utils.md': [
         "docclean.utils.get_png_data",
         "docclean.utils.get_kaggle_paired_data",
@@ -22,3 +24,5 @@ pages = {
 
 doc_generator = DocumentationGenerator(pages)
 doc_generator.generate('./sources')
+
+shutil.copyfile('../README.md', 'sources/index.md')
