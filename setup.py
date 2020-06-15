@@ -7,7 +7,6 @@ setup(
     name='insight_docclean',
     version='0.1',
     packages=find_packages(),
-    install_requires=required,
     tests_require=['pytest'],
     zip_safe=False,
     url='https://github.com/devanshkv/insight_docclean/',
