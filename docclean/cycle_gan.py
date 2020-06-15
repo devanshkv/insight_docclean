@@ -78,6 +78,16 @@ class CycleGan:
 
     @tf.function
     def train_step(self, real_x, real_y):
+        """
+        A single training step
+
+        Args:
+
+            real_x (tf.Tensor): real training image X
+
+            real_y (tf.Tensor): real training image y
+
+        """
         # persistent is set to True because the tape is used more than
         # once to calculate the gradients.
         with tf.GradientTape(persistent=True) as tape:
@@ -114,15 +124,15 @@ class CycleGan:
             disc_y_loss = self.discriminator_loss(disc_real_y, disc_fake_y)
 
         # Calculate the gradients for generator and discriminator
-        generator_g_gradients = tape.gradient(total_gen_g_loss,
-                                              self.generator_g.trainable_variables)
-        generator_f_gradients = tape.gradient(total_gen_f_loss,
-                                              self.generator_f.trainable_variables)
+        self.generator_g_gradients = tape.gradient(total_gen_g_loss,
+                                                   self.generator_g.trainable_variables)
+        self.generator_f_gradients = tape.gradient(total_gen_f_loss,
+                                                   self.generator_f.trainable_variables)
 
-        discriminator_x_gradients = tape.gradient(disc_x_loss,
-                                                  self.discriminator_x.trainable_variables)
-        discriminator_y_gradients = tape.gradient(disc_y_loss,
-                                                  self.discriminator_y.trainable_variables)
+        self.discriminator_x_gradients = tape.gradient(disc_x_loss,
+                                                       self.discriminator_x.trainable_variables)
+        self.discriminator_y_gradients = tape.gradient(disc_y_loss,
+                                                       self.discriminator_y.trainable_variables)
 
         # Apply the gradients to the optimizer
         self.generator_g_optimizer.apply_gradients(zip(self.generator_g_gradients,
@@ -138,6 +148,18 @@ class CycleGan:
                                                            self.discriminator_y.trainable_variables))
 
     def train(self, dirty_images: tf.data.Dataset, clean_images: tf.data.Dataset, epochs: int = 50):
+        """
+        Training function.
+
+        Args:
+
+            dirty_images (tf.data.Dataset): dirty images dataset
+
+            clean_images (tf.data.Dataset): clean images dataset
+
+            epochs (int): Number of epochs to run
+
+        """
         for epoch in tqdm.tqdm(range(epochs), leave=False):
             for image_x, image_y in tqdm.tqdm(tf.data.Dataset.zip((dirty_images, clean_images)), leave=False):
                 self.train_step(image_x, image_y)
