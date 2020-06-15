@@ -86,7 +86,7 @@ if __name__ == "__main__":
 
         if args.dirty_books_dir is not None:
             books_dirty_images = tf.data.Dataset.from_tensor_slices(
-                glob.glob(f"{args.dirty_books_dir}/*png").shuffle(buffer_size=40960)
+                glob.glob(f"{args.dirty_books_dir}/*png")).shuffle(buffer_size=40960)
             books_clean_images = tf.data.Dataset.from_tensor_slices(
                 glob.glob(f"{args.clean_books_dir}/*png")).shuffle(buffer_size=40960)
             books_dirty_images = books_dirty_images.map(docclean.utils.get_png_data).cache()
@@ -99,12 +99,12 @@ if __name__ == "__main__":
             dirty_images = tf.data.Dataset.concatenate(kaggle_dirty_images, books_dirty_images)
             clean_images = tf.data.Dataset.concatenate(kaggle_clean_images, books_clean_images)
 
-            else:
+        else:
             dirty_images = kaggle_dirty_images
             clean_images = kaggle_clean_images
 
-            dirty_images = dirty_images.shuffle(4096).batch(args.batch_size).prefetch(AUTOTUNE)
-            clean_images = clean_images.shuffle(4096).batch(args.batch_size).prefetch(AUTOTUNE)
+        dirty_images = dirty_images.shuffle(4096).batch(args.batch_size).prefetch(AUTOTUNE)
+        clean_images = clean_images.shuffle(4096).batch(args.batch_size).prefetch(AUTOTUNE)
 
-            cycle_gan = docclean.cycle_gan.CycleGan()
-            cycle_gan.train(dirty_images, clean_images)
+        cycle_gan = docclean.cycle_gan.CycleGan()
+        cycle_gan.train(dirty_images, clean_images)
