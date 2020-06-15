@@ -29,6 +29,7 @@ class Autoencoder():
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
 
         if mixed_precision:
+            from tensorflow.keras.mixed_precision import experimental as mixed_precision
 
             self.policy = mixed_precision.Policy('mixed_float16')
             mixed_precision.set_policy(self.policy)
