@@ -6,7 +6,6 @@ from tensorflow_examples.models.pix2pix import pix2pix
 
 logger = logging.getLogger(__name__)
 
-
 class CycleGan():
     """
     Cycle GAN in tensorflow based on the pix2pix.
@@ -23,12 +22,14 @@ class CycleGan():
     def __int__(self, checkpoint_path: str = None, restore_checpoint: bool = True):
 
         OUTPUT_CHANNELS = 3
-
+        logger.debug("Creating Generators and Discriminantors")
         self.generator_g = pix2pix.unet_generator(OUTPUT_CHANNELS, norm_type='instancenorm')
         self.generator_f = pix2pix.unet_generator(OUTPUT_CHANNELS, norm_type='instancenorm')
 
         self.discriminator_x = pix2pix.discriminator(norm_type='instancenorm', target=False)
         self.discriminator_y = pix2pix.discriminator(norm_type='instancenorm', target=False)
+
+        logger.debug("Setting up the optimizers")
 
         self.generator_g_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
         self.generator_f_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
