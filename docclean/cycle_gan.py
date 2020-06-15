@@ -3,7 +3,7 @@ import tqdm
 from tensorflow_examples.models.pix2pix import pix2pix
 
 
-class CycleGan:
+class CycleGan():
     """
     Cycle GAN in tensorflow based on the pix2pix.
 
