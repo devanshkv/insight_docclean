@@ -1,0 +1,33 @@
+site_name: DocClean Documentation
+site_author: Devansh Agarwal
+docs_dir: sources
+site_description: 'DocClean Documentation'
+
+theme:
+  name: material
+  palette:
+    scheme: slate
+    primary: deep orange
+
+repo_name: insight_docclean
+repo_url: https://github.com/devanshkv/insight_docclean
+
+nav:
+  - Core: index.md
+  - API:
+      - Autoencoder: AutoEncoder.md
+      - Cycle GAN: CycleGAN.md
+      - Utils: Utils.md
+
+
+markdown_extensions:
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - codehilite:
+      guess_lang: False
+      use_pygments: True
+
+google_analytics:
+  - UA-167281386-3
+  - auto
