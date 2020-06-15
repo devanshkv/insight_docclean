@@ -8,6 +8,7 @@ import tqdm
 
 import docclean
 
+logger = logging.getLogger(__name__)
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 if __name__ == "__main__":

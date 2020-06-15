@@ -6,7 +6,8 @@ from tensorflow_examples.models.pix2pix import pix2pix
 
 logger = logging.getLogger(__name__)
 
-class CycleGan():
+
+class CycleGan:
     """
     Cycle GAN in tensorflow based on the pix2pix.
 
@@ -14,22 +15,22 @@ class CycleGan():
 
         checkpoint_path: Where to put the checkpoints
 
-        restore_checpoint: Restore old checkpoints or not
+        restore_checkpoint: Restore old checkpoints or not
 
 
     """
 
-    def __int__(self, checkpoint_path: str = None, restore_checpoint: bool = True):
+    def __init__(self, checkpoint_path: str = None, restore_checkpoint: bool = True):
 
-        OUTPUT_CHANNELS = 3
-        logger.debug("Creating Generators and Discriminantors")
-        self.generator_g = pix2pix.unet_generator(OUTPUT_CHANNELS, norm_type='instancenorm')
-        self.generator_f = pix2pix.unet_generator(OUTPUT_CHANNELS, norm_type='instancenorm')
+        output_channels = 3
+        logger.info("Creating Generators and Discriminators")
+        self.generator_g = pix2pix.unet_generator(output_channels, norm_type='instancenorm')
+        self.generator_f = pix2pix.unet_generator(output_channels, norm_type='instancenorm')
 
         self.discriminator_x = pix2pix.discriminator(norm_type='instancenorm', target=False)
         self.discriminator_y = pix2pix.discriminator(norm_type='instancenorm', target=False)
 
-        logger.debug("Setting up the optimizers")
+        logger.info("Setting up the optimizers")
 
         self.generator_g_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
         self.generator_f_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
@@ -56,9 +57,9 @@ class CycleGan():
 
         self.ckpt_manager = tf.train.CheckpointManager(self.ckpt, self.checkpoint_path, max_to_keep=5)
 
-        self.restore_checpoint = restore_checpoint
+        self.restore_checkpoint = restore_checkpoint
 
-        if self.restore_checpoint:
+        if self.restore_checkpoint:
             # if a checkpoint exists, restore the latest checkpoint.
             if self.ckpt_manager.latest_checkpoint:
                 self.ckpt.restore(self.ckpt_manager.latest_checkpoint)
