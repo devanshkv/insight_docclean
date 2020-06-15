@@ -11,12 +11,12 @@ class CycleGan:
 
         checkpoint_path: Where to put the checkpoints
 
-        restor_checpoint: Restore old checkpoints or not
+        restore_checpoint: Restore old checkpoints or not
 
 
     """
 
-    def __int__(self, checkpoint_path: str = None, restor_checpoint: bool = True):
+    def __int__(self, checkpoint_path: str = None, restore_checpoint: bool = True):
 
         OUTPUT_CHANNELS = 3
         LAMBDA = 10
@@ -51,9 +51,9 @@ class CycleGan:
 
         self.ckpt_manager = tf.train.CheckpointManager(self.ckpt, self.checkpoint_path, max_to_keep=5)
 
-        self.restor_checpoint = restor_checpoint
+        self.restore_checpoint = restore_checpoint
 
-        if self.restor_checpoint:
+        if self.restore_checpoint:
             # if a checkpoint exists, restore the latest checkpoint.
             if self.ckpt_manager.latest_checkpoint:
                 self.ckpt.restore(self.ckpt_manager.latest_checkpoint)
