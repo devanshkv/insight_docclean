@@ -14,13 +14,13 @@ setup(
     license='GNU Lesser General Public License v3.0',
     author='Devansh Agarwal',
     author_email='devansh.kv@gmail.com',
-    description='Clean your document images'
-classifiers = [
-    'Natural Language :: English',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.6',
-    'Programming Language :: Python :: 3.7',
-    'Programming Language :: Python :: 3.8',
-    'License :: OSI Approved :: GNU General Public License v3 (GPLv3)']
+    description='Clean your document images',
+    classifiers=[
+        'Natural Language :: English',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)']
 )
