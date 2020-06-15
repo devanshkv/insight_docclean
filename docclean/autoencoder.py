@@ -20,7 +20,8 @@ class Autoencoder():
 
     """
 
-    def __init__(self, img_rows: int = 256, img_cols: int = 256, nchans: int = 3, mixed_precision: bool = False,
+    def __init__(self, img_rows: int = 256, img_cols: int = 256, nchans: int = 3,
+                 mixed_precision_training: bool = False,
                  early_stopping: int = 25):
         self.img_rows = img_rows
         self.img_cols = img_cols
@@ -28,7 +29,7 @@ class Autoencoder():
         self.early_stopping = early_stopping
         self.img_shape = (self.img_rows, self.img_cols, self.channels)
 
-        if mixed_precision:
+        if mixed_precision_training:
             from tensorflow.keras.mixed_precision import experimental as mixed_precision
 
             self.policy = mixed_precision.Policy('mixed_float16')
