@@ -5,7 +5,7 @@ from tensorflow_examples.models.pix2pix import pix2pix
 
 class CycleGan:
     """
-    Cycle GAN in tensorflow based on the pip2pix.
+    Cycle GAN in tensorflow based on the pix2pix.
 
     Args:
 
@@ -19,7 +19,6 @@ class CycleGan:
     def __int__(self, checkpoint_path: str = None, restore_checpoint: bool = True):
 
         OUTPUT_CHANNELS = 3
-        LAMBDA = 10
 
         self.generator_g = pix2pix.unet_generator(OUTPUT_CHANNELS, norm_type='instancenorm')
         self.generator_f = pix2pix.unet_generator(OUTPUT_CHANNELS, norm_type='instancenorm')
@@ -34,6 +33,7 @@ class CycleGan:
         self.discriminator_y_optimizer = tf.keras.optimizers.Adam(2e-4, beta_1=0.5)
 
         self.loss_obj = tf.keras.losses.BinaryCrossentropy(from_logits=True)
+        self.LAMBDA = 10
 
         if checkpoint_path is None:
             self.checkpoint_path = '..'
@@ -70,11 +70,11 @@ class CycleGan:
 
     def calc_cycle_loss(self, real_image, cycled_image):
         loss1 = tf.reduce_mean(tf.abs(real_image - cycled_image))
-        return LAMBDA * loss1
+        return self.LAMBDA * loss1
 
     def identity_loss(self, real_image, same_image):
         loss = tf.reduce_mean(tf.abs(real_image - same_image))
-        return LAMBDA * 0.5 * loss
+        return self.LAMBDA * 0.5 * loss
 
     @tf.function
     def train_step(self, real_x, real_y):
@@ -115,32 +115,32 @@ class CycleGan:
 
         # Calculate the gradients for generator and discriminator
         generator_g_gradients = tape.gradient(total_gen_g_loss,
-                                              generator_g.trainable_variables)
+                                              self.generator_g.trainable_variables)
         generator_f_gradients = tape.gradient(total_gen_f_loss,
-                                              generator_f.trainable_variables)
+                                              self.generator_f.trainable_variables)
 
         discriminator_x_gradients = tape.gradient(disc_x_loss,
-                                                  discriminator_x.trainable_variables)
+                                                  self.discriminator_x.trainable_variables)
         discriminator_y_gradients = tape.gradient(disc_y_loss,
-                                                  discriminator_y.trainable_variables)
+                                                  self.discriminator_y.trainable_variables)
 
         # Apply the gradients to the optimizer
-        self.generator_g_optimizer.apply_gradients(zip(generator_g_gradients,
-                                                       generator_g.trainable_variables))
+        self.generator_g_optimizer.apply_gradients(zip(self.generator_g_gradients,
+                                                       self.generator_g.trainable_variables))
 
-        self.generator_f_optimizer.apply_gradients(zip(generator_f_gradients,
-                                                       generator_f.trainable_variables))
+        self.generator_f_optimizer.apply_gradients(zip(self.generator_f_gradients,
+                                                       self.generator_f.trainable_variables))
 
-        self.discriminator_x_optimizer.apply_gradients(zip(discriminator_x_gradients,
-                                                           discriminator_x.trainable_variables))
+        self.discriminator_x_optimizer.apply_gradients(zip(self.discriminator_x_gradients,
+                                                           self.discriminator_x.trainable_variables))
 
-        self.discriminator_y_optimizer.apply_gradients(zip(discriminator_y_gradients,
-                                                           discriminator_y.trainable_variables))
+        self.discriminator_y_optimizer.apply_gradients(zip(self.discriminator_y_gradients,
+                                                           self.discriminator_y.trainable_variables))
 
     def train(self, dirty_images: tf.data.Dataset, clean_images: tf.data.Dataset, epochs: int = 50):
         for epoch in tqdm.tqdm(range(epochs), leave=False):
-            for image_x, image_y in tqdm.notebook.tqdm(tf.data.Dataset.zip((dirty_images, clean_images)), leave=False):
-                train_step(image_x, image_y)
+            for image_x, image_y in tqdm.tqdm(tf.data.Dataset.zip((dirty_images, clean_images)), leave=False):
+                self.train_step(image_x, image_y)
 
             if (epoch + 1) % 5 == 0:
                 ckpt_save_path = self.ckpt_manager.save()
