@@ -87,11 +87,11 @@ if __name__ == "__main__":
         if args.dirty_books_dir is not None:
             books_dirty_images = tf.data.Dataset.from_tensor_slices(
                 glob.glob(f"{args.dirty_books_dir}/*png").shuffle(buffer_size=40960)
-            books_clean_imgaes = tf.data.Dataset.from_tensor_slices(
+            books_clean_images = tf.data.Dataset.from_tensor_slices(
                 glob.glob(f"{args.clean_books_dir}/*png")).shuffle(buffer_size=40960)
             books_dirty_images = books_dirty_images.map(docclean.utils.get_png_data).cache()
-            books_clean_images = books_clean_imgaes.map(docclean.utils.get_png_data).cache()
-            books_dirty_images = books_dirty_images.map(docclean.utils.books_crop_and_augment,
+            books_clean_images = books_clean_images.map(docclean.utils.get_png_data).cache()
+            books_dirty_images = books_clean_images.map(docclean.utils.books_crop_and_augment,
                                                         num_parallel_calls=AUTOTUNE)
             books_clean_images = books_clean_images.map(docclean.utils.books_crop_and_augment,
                                                         num_parallel_calls=AUTOTUNE)
