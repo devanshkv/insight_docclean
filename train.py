@@ -1,5 +1,6 @@
 import argparse
 import glob
+import logging
 
 import pylab as plt
 import tensorflow as tf
@@ -21,13 +22,22 @@ if __name__ == "__main__":
                         default=None)
     parser.add_argument('-e', '--epochs', help='Number of epochs to train for', type=int, default=100, required=False)
     parser.add_argument('-b', '--batch_size', help='Batch size', type=int, default=16, required=False)
+    parser.add_argument('-v', '--verbose', help='Be verbose', action='store_true')
 
     args = parser.parse_args()
+
+    logging_format = '%(asctime)s - %(funcName)s -%(name)s - %(levelname)s - %(message)s'
+
+    if args.verbose:
+        logging.basicConfig(level=logging.DEBUG, format=logging_format)
+    else:
+        logging.basicConfig(level=logging.INFO, format=logging_format)
 
     # Set up kaggle data ingestion
 
     kaggle_img_list = glob.glob(f"{args.kaggle_data_dir}/*png")
     train_imgs_list = []
+    logging.info("Reading Kaggle Data.")
     for img in tqdm.tqdm(kaggle_img_list):
         im_frame = plt.imread(img)
         if im_frame.shape[0] != 258:
@@ -57,8 +67,11 @@ if __name__ == "__main__":
         val_ds = val_ds.batch(args.batch_size)
         val_ds = val_ds.prefetch(AUTOTUNE)
 
+        logging.info("Creating Autoencoder Model")
         autoencoder = docclean.autoencoder.Autoencoder()
-        autoencoder.train_model(labeled_ds, validation_data=val_ds)
+        logging.info(f"Training Autoencoder Model for {args.epochs} epochs.")
+        autoencoder.train_model(labeled_ds, validation_data=val_ds, epochs=args.epochs)
+        logging.info(f"Saving the model under the name Docclean_autoencoder.hdf5.")
         autoencoder.autoencoder_model.save("Docclean_autoencoder.hdf5")
 
 
@@ -85,6 +98,7 @@ if __name__ == "__main__":
                                                       num_parallel_calls=AUTOTUNE)
 
         if args.dirty_books_dir is not None:
+            logging.info("Reading Dirty/Clean books data.")
             books_dirty_images = tf.data.Dataset.from_tensor_slices(
                 glob.glob(f"{args.dirty_books_dir}/*png")).shuffle(buffer_size=40960)
             books_clean_images = tf.data.Dataset.from_tensor_slices(
@@ -106,5 +120,8 @@ if __name__ == "__main__":
         dirty_images = dirty_images.shuffle(4096).batch(args.batch_size).prefetch(AUTOTUNE)
         clean_images = clean_images.shuffle(4096).batch(args.batch_size).prefetch(AUTOTUNE)
 
+        logging.info("Creating the Cycle GAN model.")
         cycle_gan = docclean.cycle_gan.CycleGan()
+
+        logging.info("Training the Cycle GAN model.")
         cycle_gan.train(dirty_images, clean_images)
