@@ -1,0 +1,9 @@
+tensorflow-gpu>=2.1
+git+https://github.com/tensorflow/examples.git
+tqdm
+numpy
+streamlit
+matplotlib
+pyyaml
+h5py
+keras-autodoc
