@@ -103,8 +103,8 @@ if __name__ == "__main__":
             dirty_images = kaggle_dirty_images
             clean_images = kaggle_clean_images
 
-            dirty_images = dirty_images.shuffle(4096).batch(BATCH_SIZE).prefetch(AUTOTUNE)
-            clean_images = clean_images.shuffle(4096).batch(BATCH_SIZE).prefetch(AUTOTUNE)
+            dirty_images = dirty_images.shuffle(4096).batch(args.batch_size).prefetch(AUTOTUNE)
+            clean_images = clean_images.shuffle(4096).batch(args.batch_size).prefetch(AUTOTUNE)
 
             cycle_gan = docclean.cycle_gan.CycleGan()
             cycle_gan.train(dirty_images, clean_images)
