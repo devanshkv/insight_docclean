@@ -1,6 +1,10 @@
+import logging
+
 import tensorflow as tf
 import tqdm
 from tensorflow_examples.models.pix2pix import pix2pix
+
+logger = logging.getLogger(__name__)
 
 
 class CycleGan():

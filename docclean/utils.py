@@ -1,8 +1,10 @@
+import logging
 from typing import Tuple
 
 import numpy as np
 import tensorflow as tf
 
+logger = logging.getLogger(__name__)
 
 def get_png_data(fname: str) -> tf.Tensor:
     """
