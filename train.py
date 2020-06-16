@@ -72,8 +72,8 @@ if __name__ == "__main__":
         autoencoder = docclean.autoencoder.Autoencoder()
         logging.info(f"Training Autoencoder Model for {args.epochs} epochs.")
         autoencoder.train_model(labeled_ds, validation_data=val_ds, epochs=args.epochs)
-        logging.info(f"Saving the model under the name Docclean_autoencoder.hdf5.")
-        autoencoder.autoencoder_model.save("Docclean_autoencoder.hdf5")
+        logging.info(f"Saving the model under the name Docclean_autoencoder.")
+        autoencoder.autoencoder_model.save_weights("weights/ae")
 
 
     else:
@@ -125,4 +125,6 @@ if __name__ == "__main__":
         cycle_gan = docclean.cycle_gan.CycleGan()
 
         logging.info("Training the Cycle GAN model.")
-        cycle_gan.train(dirty_images, clean_images)
+        cycle_gan.train(dirty_images, clean_images, epochs=args.epochs)
+        logging.info("Saving the model under Docclean_cyclegan")
+        cycle_gan.generator_g.save_weights("weights/cg")
