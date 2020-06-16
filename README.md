@@ -1,4 +1,36 @@
-# insight_docclean
+# DocClean
+[![GitHub issues](https://img.shields.io/github/issues/devanshkv/insight_docclean?style=flat-square)](https://github.com/devanshkv/insight_docclean/issues)
+[![GitHub forks](https://img.shields.io/github/forks/devanshkv/insight_docclean?style=flat-square)](https://github.com/devanshkv/insight_docclean/network/members)
+[![GitHub stars](https://img.shields.io/github/stars/devanshkv/insight_docclean?style=flat-square)](https://github.com/devanshkv/insight_docclean/stargazers)
+[![GitHub license](https://img.shields.io/github/license/devanshkv/insight_docclean?style=flat-square)](https://github.com/devanshkv/insight_docclean/blob/master/LICENSE)
+[![HitCount](http://hits.dwyl.com/devanshkv/insight_docclean.svg)](http://hits.dwyl.com/devanshkv/insight_docclean)
+[![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fdevanshkv%2Finsight_docclean)]()
+
+
 Clean your docs!
 
-I am gonna dump data here.
+
+# Training the models
+The models can be trained using `train.py`. The usage is as follows:
+
+```
+usage: train.py [-h] -t {cycle_gan,autoencoder} -k KAGGLE_DATA_DIR
+                     [-c CLEAN_BOOKS_DIR]
+                     [-d DIRTY_BOOKS_DIR] [-e EPOCHS]
+                     [-b BATCH_SIZE] [-v]
+```
+### Quick reference table
+|Short|Long               |Default|Description                      |
+|-----|-------------------|-------|---------------------------------|
+|`-h` |`--help`           |       |show this help message and exit  |
+|`-t` |`--type`           |`None` |Which model to train             |
+|`-k` |`--kaggle_data_dir`|`None` |Kaggle Data Directory            |
+|`-c` |`--clean_books_dir`|`None` |Directory containing clean images|
+|`-d` |`--dirty_books_dir`|`None` |Directory containing dirty images|
+|`-e` |`--epochs`         |`100`  |Number of epochs to train for    |
+|`-b` |`--batch_size`     |`16`   |Batch size                       |
+|`-v` |`--verbose`        |       |Be verbose                       |
+
+# Running the inference
+
+Using the trained model the infence can be run using `infer.py`. The usage is as follows:
