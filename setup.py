@@ -7,7 +7,7 @@ setup(
     name='insight_docclean',
     version='0.1',
     packages=find_packages(),
-    tests_require=['pytest'],
+    tests_require=['pytest', 'pytest-cov'],
     zip_safe=False,
     url='https://github.com/devanshkv/insight_docclean/',
     license='GNU Lesser General Public License v3.0',
