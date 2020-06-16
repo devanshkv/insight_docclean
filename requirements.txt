@@ -5,3 +5,4 @@ numpy
 streamlit
 matplotlib
 pyyaml
+pytesseract
