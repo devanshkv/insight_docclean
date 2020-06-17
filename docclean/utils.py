@@ -2,6 +2,7 @@ import logging
 from typing import Tuple
 
 import numpy as np
+import patcher as patchify
 import tensorflow as tf
 
 logger = logging.getLogger(__name__)
@@ -192,3 +193,43 @@ def kaggle_paired_augment(dirty: tf.Tensor, clean: tf.Tensor, size: Tuple[int, i
         combined = tf.image.random_flip_up_down(combined)
 
     return combined[:, :, :3], combined[:, :, 3:]
+
+
+class ImageMosaic:
+    def __init__(self, image):
+        self.image = self.normalise(image.astype('float'))
+        self.input_shape = image.shape
+        self.extended_image = self.extend_image()
+
+    def get_powers_of_two(self, number):
+        return int(2 ** np.ceil(np.log2(number)))
+
+    def normalise(self, image):
+        return (image - image.min()) / (image.max() - image.min())
+
+    @property
+    def get_new_shape(self):
+        _x = self.input_shape[0]
+        _y = self.input_shape[1]
+        return self.get_powers_of_two(_x), self.get_powers_of_two(_y)
+
+    def extend_image(self):
+        extended_image = np.ones((*self.get_new_shape, self.input_shape[-1]), dtype=self.image.dtype)
+        extended_image[:self.input_shape[0], :self.input_shape[1]] = self.image
+        return extended_image
+
+    def make_patches(self):
+        patches = []
+        for ii in range(self.input_shape[-1]):
+            patches.append(patchify.patchify(self.extended_image[:, :, ii], (256, 256), 128))
+        patches = np.stack(patches, axis=-1)
+        self.patch_shape = patches.shape
+        return patches.reshape(self.patch_shape[0] * self.patch_shape[1], 256, 256, 3)
+
+    def combine_patches(self, patches):
+        patches = patches.reshape(self.patch_shape)
+        original_image = []
+        for ii in range(self.input_shape[-1]):
+            original_image.append(patchify.unpatchify(patches[:, :, :, :, ii], self.extended_image.shape[:-1]))
+        original_image = np.stack(original_image, axis=-1)
+        return original_image[:self.input_shape[0], :self.input_shape[1]]
