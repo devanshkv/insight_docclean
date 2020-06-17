@@ -8,13 +8,14 @@
 
 
 ### Clean your document images with crumpled backgrounds, strains and folds with Deep Neural Networks.
-### Clean dirty images like these:
-<img src="data/train/101.png" width="350"> <img src="data/train/111.png" width="350">
 
-### To these:
-<img src="data/train_cleaned/101.png" width="350"><img src="data/train_cleaned/111.png" width="350">
 
-# Installation
+Here is a demo:
+![](data/demo.gif)
+
+You can find the slide deck accompanying this project [here](https://docs.google.com/presentation/d/1k0ulZ-9ExgH9h1v2684A7HlRs-bKhIFVl0FxAtLuRds/edit?usp=sharing). 
+
+## Installation
 For installing docclean is easy. Just run the following:
 
 ```
@@ -24,10 +25,10 @@ pip install -r requirements.txt
 python3 setup.py install
 ```
 
-# Documentation
+## Documentation
 Have a look at our beauitful docs [here](https://devanshkv.github.io/insight_docclean/).
 
-# Training the models
+## Training the models
 The models can be trained using `train.py`. The usage is as follows:
 
 ```
@@ -48,7 +49,7 @@ usage: train.py [-h] -t {cycle_gan,autoencoder} -k KAGGLE_DATA_DIR
 |`-b` |`--batch_size`     |`16`   |Batch size                       |
 |`-v` |`--verbose`        |       |Be verbose                       |
 
-# Running the inference
+## Running the inference
 
 Using the trained model the infence can be run using `infer.py`. The usage is as follows:
 
@@ -66,3 +67,10 @@ usage: infer.py [-h] [-v] [-g GPU_ID] -c DATA_DIR [-b BATCH_SIZE] -t
 |`-b` |`--batch_size`|`32`   |Batch size for training data   |
 |`-t` |`--type`      |`None` |Which model to train           |
 |`-w` |`--weights`   |`None` |Model weights                  |
+
+## Running the [streamlit](https://www.streamlit.io/) app
+Run,
+```
+streamlit run app.py
+```
+ and the use `localhost:8501` to view the app.
