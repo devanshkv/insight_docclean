@@ -4,11 +4,19 @@
 [![GitHub stars](https://img.shields.io/github/stars/devanshkv/insight_docclean?style=flat-square)](https://github.com/devanshkv/insight_docclean/stargazers)
 [![GitHub license](https://img.shields.io/github/license/devanshkv/insight_docclean?style=flat-square)](https://github.com/devanshkv/insight_docclean/blob/master/LICENSE)
 [![HitCount](http://hits.dwyl.com/devanshkv/insight_docclean.svg)](http://hits.dwyl.com/devanshkv/insight_docclean)
-[![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fdevanshkv%2Finsight_docclean)]()
+[![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fdevanshkv%2Finsight_docclean)](https://twitter.com/devanshkv)
 
 
 Clean your docs!
+# Installation
+For installing docclean is easy. Just run the following:
 
+```
+git clone https://github.com/devanshkv/insight_docclean.git
+cd insight_docclean
+pip install -r requirements.txt
+python3 setup.py install
+```
 
 # Training the models
 The models can be trained using `train.py`. The usage is as follows:
@@ -34,3 +42,18 @@ usage: train.py [-h] -t {cycle_gan,autoencoder} -k KAGGLE_DATA_DIR
 # Running the inference
 
 Using the trained model the infence can be run using `infer.py`. The usage is as follows:
+
+```
+usage: infer.py [-h] [-v] [-g GPU_ID] -c DATA_DIR [-b BATCH_SIZE] -t
+               {cycle_gan,autoencoder} -w WEIGHTS
+```
+### Quick reference table
+|Short|Long          |Default|Description                    |
+|-----|--------------|-------|-------------------------------|
+|`-h` |`--help`      |       |show this help message and exit|
+|`-v` |`--verbose`   |       |Be verbose                     |
+|`-g` |`--gpu_id`    |`0`    |GPU ID (use -1 for CPU)        |
+|`-c` |`--data_dir`  |`None` |Directory with candidate pngs. |
+|`-b` |`--batch_size`|`32`   |Batch size for training data   |
+|`-t` |`--type`      |`None` |Which model to train           |
+|`-w` |`--weights`   |`None` |Model weights                  |
