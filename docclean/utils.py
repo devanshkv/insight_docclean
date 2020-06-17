@@ -195,16 +195,70 @@ def kaggle_paired_augment(dirty: tf.Tensor, clean: tf.Tensor, size: Tuple[int, i
     return combined[:, :, :3], combined[:, :, 3:]
 
 
+def normed_to_uint8(image: np.ndarray) -> np.ndarray:
+    """
+    Scale normalised image to unit8 array
+
+    Args:
+
+        image (np.ndarray) : image array
+
+    Returns:
+
+        np.ndarray: uint8 scaled array
+    """
+    return (255 * (image - image.min()) / (image.max() - image.min())).astype('uint8')
+
+
 class ImageMosaic:
-    def __init__(self, image):
+    """
+    Image Mosaic class to make mosaic out of large images
+
+    Args:
+
+        image (np.ndarray): Numpy image array
+
+    Attributes:
+
+        input_shape: Input image size
+
+        extended_image: pads the images to the nearest powers of two.
+
+    """
+
+    def __init__(self, image: np.ndarray):
         self.image = self.normalise(image.astype('float'))
         self.input_shape = image.shape
         self.extended_image = self.extend_image()
 
-    def get_powers_of_two(self, number):
+    def get_powers_of_two(self, number: int) -> int:
+        """
+        Get nearest power of two
+
+        Args:
+
+            number (int): Input number
+
+        Returns:
+
+            int: Nearest power of two
+
+        """
         return int(2 ** np.ceil(np.log2(number)))
 
-    def normalise(self, image):
+    def normalise(self, image: np.ndarray) -> np.ndarray:
+        """
+        Normalise the image between one and zero.
+
+        Args:
+
+            image (np.ndarray): Image array
+
+        Returns:
+
+            np.ndarray: Normalized array
+
+        """
         return (image - image.min()) / (image.max() - image.min())
 
     @property
@@ -214,11 +268,27 @@ class ImageMosaic:
         return self.get_powers_of_two(_x), self.get_powers_of_two(_y)
 
     def extend_image(self):
+        """
+        Pad the image to neast power to two.
+
+        Returns:
+
+            np.ndarray: Numpy array of extended image
+
+        """
         extended_image = np.ones((*self.get_new_shape, self.input_shape[-1]), dtype=self.image.dtype)
         extended_image[:self.input_shape[0], :self.input_shape[1]] = self.image
         return extended_image
 
     def make_patches(self):
+        """
+        Makes patches of the image
+
+        Returns:
+
+            np.ndarray: Patches
+
+        """
         patches = []
         for ii in range(self.input_shape[-1]):
             patches.append(patchify.patchify(self.extended_image[:, :, ii], (256, 256), 128))
@@ -227,6 +297,17 @@ class ImageMosaic:
         return patches.reshape(self.patch_shape[0] * self.patch_shape[1], 256, 256, 3)
 
     def combine_patches(self, patches):
+        """
+        Combine patches back to image
+
+        Args:
+            patches (np.ndarray): Patches array
+
+        Returns:
+
+            np.ndarray: Original Image
+
+        """
         patches = patches.reshape(self.patch_shape)
         original_image = []
         for ii in range(self.input_shape[-1]):
