@@ -13,6 +13,13 @@ pages = {
         "docclean.cycle_gan.CycleGan.train"
     ],
     'Utils.md': [
+        "docclean.utils.ImageMosaic",
+        "docclean.utils.ImageMosaic.get_powers_of_two",
+        "docclean.utils.ImageMosaic.normalise",
+        "docclean.utils.ImageMosaic.extend_image",
+        "docclean.utils.ImageMosaic.make_patches",
+        "docclean.utils.ImageMosaic.combine_patches",
+        "docclean.utils.normed_to_uint8",
         "docclean.utils.get_png_data",
         "docclean.utils.get_kaggle_paired_data",
         "docclean.utils.get_kaggle_data",
