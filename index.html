@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#insight_docclean" class="md-skip">
+        <a href="#docclean" class="md-skip">
           Skip to content
         </a>
       
@@ -310,9 +310,86 @@
                   
                 
                 
-                <h1 id="insight_docclean">insight_docclean</h1>
+                <h1 id="docclean">DocClean</h1>
+<p><a href="https://github.com/devanshkv/insight_docclean/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/devanshkv/insight_docclean?style=flat-square" /></a>
+<a href="https://github.com/devanshkv/insight_docclean/network/members"><img alt="GitHub forks" src="https://img.shields.io/github/forks/devanshkv/insight_docclean?style=flat-square" /></a>
+<a href="https://github.com/devanshkv/insight_docclean/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/devanshkv/insight_docclean?style=flat-square" /></a>
+<a href="https://github.com/devanshkv/insight_docclean/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/devanshkv/insight_docclean?style=flat-square" /></a>
+<a href="http://hits.dwyl.com/devanshkv/insight_docclean"><img alt="HitCount" src="http://hits.dwyl.com/devanshkv/insight_docclean.svg" /></a>
+<a href=""><img alt="Twitter" src="https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fdevanshkv%2Finsight_docclean" /></a></p>
 <p>Clean your docs!</p>
-<p>I am gonna dump data here.</p>
+<h1 id="training-the-models">Training the models</h1>
+<p>The models can be trained using <code>train.py</code>. The usage is as follows:</p>
+<div class="codehilite"><pre><span></span><code>usage: train.py [-h] -t {cycle_gan,autoencoder} -k KAGGLE_DATA_DIR
+                     [-c CLEAN_BOOKS_DIR]
+                     [-d DIRTY_BOOKS_DIR] [-e EPOCHS]
+                     [-b BATCH_SIZE] [-v]
+</code></pre></div>
+
+
+<h3 id="quick-reference-table">Quick reference table</h3>
+<table>
+<thead>
+<tr>
+<th>Short</th>
+<th>Long</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-h</code></td>
+<td><code>--help</code></td>
+<td></td>
+<td>show this help message and exit</td>
+</tr>
+<tr>
+<td><code>-t</code></td>
+<td><code>--type</code></td>
+<td><code>None</code></td>
+<td>Which model to train</td>
+</tr>
+<tr>
+<td><code>-k</code></td>
+<td><code>--kaggle_data_dir</code></td>
+<td><code>None</code></td>
+<td>Kaggle Data Directory</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td><code>--clean_books_dir</code></td>
+<td><code>None</code></td>
+<td>Directory containing clean images</td>
+</tr>
+<tr>
+<td><code>-d</code></td>
+<td><code>--dirty_books_dir</code></td>
+<td><code>None</code></td>
+<td>Directory containing dirty images</td>
+</tr>
+<tr>
+<td><code>-e</code></td>
+<td><code>--epochs</code></td>
+<td><code>100</code></td>
+<td>Number of epochs to train for</td>
+</tr>
+<tr>
+<td><code>-b</code></td>
+<td><code>--batch_size</code></td>
+<td><code>16</code></td>
+<td>Batch size</td>
+</tr>
+<tr>
+<td><code>-v</code></td>
+<td><code>--verbose</code></td>
+<td></td>
+<td>Be verbose</td>
+</tr>
+</tbody>
+</table>
+<h1 id="running-the-inference">Running the inference</h1>
+<p>Using the trained model the infence can be run using <code>infer.py</code>. The usage is as follows:</p>
                 
               
               

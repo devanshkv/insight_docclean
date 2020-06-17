@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#get_png_data-function" class="md-skip">
+        <a href="#imagemosaic-class" class="md-skip">
           Skip to content
         </a>
       
@@ -288,6 +288,55 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#imagemosaic-class" class="md-nav__link">
+    ImageMosaic class
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get_powers_of_two-method" class="md-nav__link">
+    get_powers_of_two method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#normalise-method" class="md-nav__link">
+    normalise method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extend_image-method" class="md-nav__link">
+    extend_image method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#make_patches-method" class="md-nav__link">
+    make_patches method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#combine_patches-method" class="md-nav__link">
+    combine_patches method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#normed_to_uint8-function" class="md-nav__link">
+    normed_to_uint8 function
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#get_png_data-function" class="md-nav__link">
     get_png_data function
   </a>
@@ -365,6 +414,55 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#imagemosaic-class" class="md-nav__link">
+    ImageMosaic class
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get_powers_of_two-method" class="md-nav__link">
+    get_powers_of_two method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#normalise-method" class="md-nav__link">
+    normalise method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extend_image-method" class="md-nav__link">
+    extend_image method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#make_patches-method" class="md-nav__link">
+    make_patches method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#combine_patches-method" class="md-nav__link">
+    combine_patches method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#normed_to_uint8-function" class="md-nav__link">
+    normed_to_uint8 function
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#get_png_data-function" class="md-nav__link">
     get_png_data function
   </a>
@@ -428,7 +526,115 @@
                 
                   <h1>Utils</h1>
                 
-                <h3 id="get_png_data-function">get_png_data function</h3>
+                <h3 id="imagemosaic-class">ImageMosaic class</h3>
+<div class="codehilite"><pre><span></span><code><span class="n">docclean</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">ImageMosaic</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>Image Mosaic class to make mosaic out of large images</p>
+<p>Args:</p>
+<div class="codehilite"><pre><span></span><code>image (np.ndarray): Numpy image array
+</code></pre></div>
+
+
+<p>Attributes:</p>
+<div class="codehilite"><pre><span></span><code>input_shape: Input image size
+
+extended_image: pads the images to the nearest powers of two.
+</code></pre></div>
+
+
+<hr />
+<h3 id="get_powers_of_two-method">get_powers_of_two method</h3>
+<div class="codehilite"><pre><span></span><code><span class="n">ImageMosaic</span><span class="o">.</span><span class="n">get_powers_of_two</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>Get nearest power of two</p>
+<p>Args:</p>
+<div class="codehilite"><pre><span></span><code>number (int): Input number
+</code></pre></div>
+
+
+<p>Returns:</p>
+<div class="codehilite"><pre><span></span><code>int: Nearest power of two
+</code></pre></div>
+
+
+<hr />
+<h3 id="normalise-method">normalise method</h3>
+<div class="codehilite"><pre><span></span><code><span class="n">ImageMosaic</span><span class="o">.</span><span class="n">normalise</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>Normalise the image between one and zero.</p>
+<p>Args:</p>
+<div class="codehilite"><pre><span></span><code>image (np.ndarray): Image array
+</code></pre></div>
+
+
+<p>Returns:</p>
+<div class="codehilite"><pre><span></span><code>np.ndarray: Normalized array
+</code></pre></div>
+
+
+<hr />
+<h3 id="extend_image-method">extend_image method</h3>
+<div class="codehilite"><pre><span></span><code><span class="n">ImageMosaic</span><span class="o">.</span><span class="n">extend_image</span><span class="p">()</span>
+</code></pre></div>
+
+
+<p>Pad the image to neast power to two.</p>
+<p>Returns:</p>
+<div class="codehilite"><pre><span></span><code>np.ndarray: Numpy array of extended image
+</code></pre></div>
+
+
+<hr />
+<h3 id="make_patches-method">make_patches method</h3>
+<div class="codehilite"><pre><span></span><code><span class="n">ImageMosaic</span><span class="o">.</span><span class="n">make_patches</span><span class="p">()</span>
+</code></pre></div>
+
+
+<p>Makes patches of the image</p>
+<p>Returns:</p>
+<div class="codehilite"><pre><span></span><code>np.ndarray: Patches
+</code></pre></div>
+
+
+<hr />
+<h3 id="combine_patches-method">combine_patches method</h3>
+<div class="codehilite"><pre><span></span><code><span class="n">ImageMosaic</span><span class="o">.</span><span class="n">combine_patches</span><span class="p">(</span><span class="n">patches</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>Combine patches back to image</p>
+<p>Args:
+    patches (np.ndarray): Patches array</p>
+<p>Returns:</p>
+<div class="codehilite"><pre><span></span><code>np.ndarray: Original Image
+</code></pre></div>
+
+
+<hr />
+<h3 id="normed_to_uint8-function">normed_to_uint8 function</h3>
+<div class="codehilite"><pre><span></span><code><span class="n">docclean</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">normed_to_uint8</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>Scale normalised image to unit8 array</p>
+<p>Args:</p>
+<div class="codehilite"><pre><span></span><code>image (np.ndarray) : image array
+</code></pre></div>
+
+
+<p>Returns:</p>
+<div class="codehilite"><pre><span></span><code>np.ndarray: uint8 scaled array
+</code></pre></div>
+
+
+<hr />
+<h3 id="get_png_data-function">get_png_data function</h3>
 <div class="codehilite"><pre><span></span><code><span class="n">docclean</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">get_png_data</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
 </code></pre></div>
 
