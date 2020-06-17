@@ -7,7 +7,13 @@
 [![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fdevanshkv%2Finsight_docclean)](https://twitter.com/devanshkv)
 
 
-Clean your docs!
+### Clean your document images with crumpled backgrounds, strains and folds with Deep Neural Networks.
+### Clean dirty images like these:
+<img src="data/train/101.png" width="350"> <img src="data/train/111.png" width="350">
+
+### To these:
+<img src="data/train_cleaned/101.png" width="350"><img src="data/train_cleaned/111.png" width="350">
+
 # Installation
 For installing docclean is easy. Just run the following:
 
@@ -17,6 +23,9 @@ cd insight_docclean
 pip install -r requirements.txt
 python3 setup.py install
 ```
+
+# Documentation
+Have a look at our beauitful docs [here](https://devanshkv.github.io/insight_docclean/).
 
 # Training the models
 The models can be trained using `train.py`. The usage is as follows:

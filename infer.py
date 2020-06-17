@@ -61,7 +61,7 @@ if __name__ == "__main__":
     if not isinstance(inffered_images, np.ndarray):
         inffered_images = inffered_images.numpy()
 
-    for idx, img_name in enumerate(input_img_list):
+    for idx, img_name in tqdm.tqdm(enumerate(input_img_list)):
         outname = img_name[:-4] + '_cleaned.png'
-        im = Image.fromarray(inffered_images[idx], 'RGB'))
+        im = Image.fromarray(inffered_images[idx], 'RGB')
         im.save(outname)
