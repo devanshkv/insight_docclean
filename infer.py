@@ -5,6 +5,8 @@ import os
 
 import tensorflow as tf
 import tqdm
+import numpy as np
+from PIL import Image
 
 import docclean
 
@@ -50,7 +52,7 @@ if __name__ == "__main__":
 
     input_img_list = glob.glob(f"{args.data_dir} + '/*png")
 
-    list_ds = tf.data.Dataset.from_tensor_slices(train_imgs_list)
+    list_ds = tf.data.Dataset.from_tensor_slices(input_img_list)
     infer_images = list_ds.map(docclean.utils.get_png_data, num_parallel_calls=AUTOTUNE)
     infer_images = infer_images.map(docclean.normalize, num_parallel_calls=AUTOTUNE).prefetch(AUTOTUNE)
 
@@ -59,7 +61,7 @@ if __name__ == "__main__":
     if not isinstance(inffered_images, np.ndarray):
         inffered_images = inffered_images.numpy()
 
-    for idx, img_name in tqdm.tqdm(enumerate(input_img_list)):
+    for idx, img_name in enumerate(input_img_list):
         outname = img_name[:-4] + '_cleaned.png'
         im = Image.fromarray(inffered_images[idx], 'RGB'))
         im.save(outname)
