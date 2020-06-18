@@ -7,10 +7,11 @@
 [![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fdevanshkv%2Finsight_docclean)](https://twitter.com/devanshkv)
 
 
-### Clean your document images with crumpled backgrounds, strains and folds with Deep Neural Networks.
+Clean your document images with crumpled backgrounds, strains and folds with Deep Neural Networks.
 
 
 Here is a demo:
+
 ![](data/demo.gif)
 
 You can find the slide deck accompanying this project [here](https://docs.google.com/presentation/d/1k0ulZ-9ExgH9h1v2684A7HlRs-bKhIFVl0FxAtLuRds/edit?usp=sharing). 

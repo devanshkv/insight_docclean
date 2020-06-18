@@ -1,3 +1,4 @@
+import os
 import shutil
 
 from keras_autodoc import DocumentationGenerator
@@ -33,3 +34,5 @@ doc_generator = DocumentationGenerator(pages)
 doc_generator.generate('./sources')
 
 shutil.copyfile('../README.md', 'sources/index.md')
+os.makedirs(os.path.dirname('sources/data/'), exist_ok=True)
+shutil.copyfile('../data/demo.gif', 'sources/data/demo.gif')
