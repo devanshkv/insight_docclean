@@ -5,6 +5,7 @@
 [![GitHub license](https://img.shields.io/github/license/devanshkv/insight_docclean?style=flat-square)](https://github.com/devanshkv/insight_docclean/blob/master/LICENSE)
 [![HitCount](http://hits.dwyl.com/devanshkv/insight_docclean.svg)](http://hits.dwyl.com/devanshkv/insight_docclean)
 [![codecov](https://codecov.io/gh/devanshkv/insight_docclean/branch/master/graph/badge.svg?style=flat-square)](https://codecov.io/gh/devanshkv/insight_docclean)
+![Python application](https://github.com/devanshkv/insight_docclean/workflows/Python%20application/badge.svg?style=flat-square)
 [![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fdevanshkv%2Finsight_docclean)](https://twitter.com/devanshkv)
 
 
