@@ -64,15 +64,15 @@ class Autoencoder:
         # ENCODER
         input_layer = tf.keras.Input(shape=self.img_shape)
         e = tf.keras.layers.Conv2D(32, (4, 4), strides=2, activation='relu')(input_layer)
-        e = tf.keras.layers.Conv2D(64, (3, 3), strides=2, activation='relu')(e)
-        e = tf.keras.layers.Conv2D(128, (3, 3), strides=2, activation='relu')(e)
+        e = tf.keras.layers.Conv2D(32, (3, 3), strides=2, activation='relu')(e)
+        e = tf.keras.layers.Conv2D(32, (3, 3), strides=2, activation='relu')(e)
 
         # DECODER
-        d = tf.keras.layers.Conv2DTranspose(128, (3, 3), strides=2, activation='relu')(e)
+        d = tf.keras.layers.Conv2DTranspose(32, (3, 3), strides=2, activation='relu')(e)
         d = tf.keras.layers.BatchNormalization()(d)
-        d = tf.keras.layers.Conv2DTranspose(64, (3, 3), strides=2, activation='relu')(d)
+        d = tf.keras.layers.Conv2DTranspose(32, (3, 3), strides=2, activation='relu')(d)
         d = tf.keras.layers.BatchNormalization()(d)
-        d = tf.keras.layers.Conv2DTranspose(164, (4, 4), strides=2, activation='relu')(d)
+        d = tf.keras.layers.Conv2DTranspose(32, (4, 4), strides=2, activation='relu')(d)
         output_layer = tf.keras.layers.Conv2D(self.channels, (3, 3), activation='sigmoid', padding='same')(d)
         return tf.keras.Model(input_layer, output_layer)
 
