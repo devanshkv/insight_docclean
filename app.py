@@ -1,6 +1,8 @@
 import numpy as np
+import pytesseract
 import streamlit as st
 from PIL import Image
+from pytesseract import TesseractNotFoundError
 
 import docclean
 from docclean.utils import ImageMosaic
@@ -22,7 +24,7 @@ if uploaded_file:
         from tensorflow_examples.models.pix2pix import pix2pix
 
         model = pix2pix.unet_generator(3, norm_type='instancenorm')
-        model.load_weights("Docclean_cyclegan/CG")
+        model.load_weights("weights/cg")
     else:
         model = docclean.autoencoder.Autoencoder().autoencoder_model
         model.load_weights("weights/ae")
@@ -39,13 +41,14 @@ if uploaded_file:
         out = (out + 1) / 2
 
     output_image = im.combine_patches(out)
+
+    output_image = (output_image - output_image.min()) / (output_image.max() - output_image.min())
     st.image(output_image)
     output_image *= 255
 
     try:
-        import pytesseract
-
-        st.write("### Output from pytessaract:")
-        st.write(pytesseract.image_to_string(Image.fromarray(output_image.astype('uint8'), 'RGB')))
-    except ImportError:
+        string = pytesseract.image_to_string(Image.fromarray(output_image.astype('uint8'), 'RGB'))
+        st.write("### Output from Tessaract:")
+        st.write(string)
+    except TesseractNotFoundError:
         pass
