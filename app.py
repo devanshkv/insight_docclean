@@ -2,7 +2,14 @@ import numpy as np
 import pytesseract
 import streamlit as st
 from PIL import Image
-from pytesseract import TesseractNotFoundError
+
+try:
+    from pytesseract import TesseractNotFoundError
+
+    tesseract_available = True
+except ImportError:
+    tesseract_available = False
+    pass
 
 import docclean
 from docclean.utils import ImageMosaic
@@ -46,9 +53,11 @@ if uploaded_file:
     st.image(output_image)
     output_image *= 255
 
-    try:
-        string = pytesseract.image_to_string(Image.fromarray(output_image.astype('uint8'), 'RGB'))
-        st.write("### Output from Tessaract:")
-        st.write(string)
-    except TesseractNotFoundError:
-        pass
+    if tesseract_available:
+
+        try:
+            string = pytesseract.image_to_string(Image.fromarray(output_image.astype('uint8'), 'RGB'))
+            st.write("### Output from Tessaract:")
+            st.write(string)
+        except TesseractNotFoundError:
+            pass
