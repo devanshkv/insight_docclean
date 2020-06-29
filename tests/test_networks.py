@@ -19,12 +19,8 @@ def test_cyclegan():
         _new_weights = np.concatenate([x.flatten() for x in new_models])
         assert not np.array_equal(_old_weights, _new_weights)
 
-
-def test_cyclegan_train_step():
-    gan = docclean.cycle_gan.CycleGan()
-    old_weights = [x.get_weights() for x in
-                   [gan.generator_g, gan.generator_f, gan.discriminator_x, gan.discriminator_y]]
-    gan.train_step(dirty_data, clean_data)
+    for image_x, image_y in tf.data.Dataset.zip((dirty_data, clean_data)):
+        gan.train_step(image_x, image_y)
     new_weights = [x.get_weights() for x in
                    [gan.generator_g, gan.generator_f, gan.discriminator_x, gan.discriminator_y]]
     for old_models, new_models in zip(old_weights, new_weights):
