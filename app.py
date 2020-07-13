@@ -4,12 +4,11 @@ from PIL import Image
 
 try:
     import pytesseract
-    from pytesseract import TesseractNotFoundError
+    import pytesseract.TesseractNotFoundError as TesseractNotFoundError
 
     tesseract_available = True
 except ImportError:
     tesseract_available = False
-    pass
 
 import docclean
 from docclean.utils import ImageMosaic

@@ -106,7 +106,7 @@ if __name__ == "__main__":
                 glob.glob(f"{args.clean_books_dir}/*png")).shuffle(buffer_size=40960)
             books_dirty_images = books_dirty_images.map(docclean.utils.get_png_data).cache()
             books_clean_images = books_clean_images.map(docclean.utils.get_png_data).cache()
-            books_dirty_images = books_clean_images.map(docclean.utils.books_crop_and_augment,
+            books_dirty_images = books_dirty_images.map(docclean.utils.books_crop_and_augment,
                                                         num_parallel_calls=AUTOTUNE)
             books_clean_images = books_clean_images.map(docclean.utils.books_crop_and_augment,
                                                         num_parallel_calls=AUTOTUNE)
