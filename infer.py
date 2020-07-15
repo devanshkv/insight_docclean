@@ -3,9 +3,9 @@ import glob
 import logging
 import os
 
+import numpy as np
 import tensorflow as tf
 import tqdm
-import numpy as np
 from PIL import Image
 
 import docclean
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     parser.add_argument('-b', '--batch_size', help='Batch size for training data', default=32, type=int)
     parser.add_argument('-t', '--type', help='Which model to train', choices=['cycle_gan', 'autoencoder'],
                         required=True, type=str)
-    parser.add_argument('-w', '--weights', help='Model weights', required=True, type=str)
+    parser.add_argument('-w', '--weights', help='Model weights', required=False, type=str, default=None)
     args = parser.parse_args()
 
     logging_format = '%(asctime)s - %(funcName)s -%(name)s - %(levelname)s - %(message)s'
@@ -48,7 +48,18 @@ if __name__ == "__main__":
     else:
         model = docclean.autoencoder.Autoencoder().autoencoder_model
 
-    model.load_weights(args.weights)
+    if args.weights is None:
+        if args.type == 'cycle_gan':
+            cg_url = "https://docclean.s3.us-east-2.amazonaws.com/cg_weights.tar.gz"
+            tf.keras.utils.get_file("cg_weights", cg_url, untar=True)
+            model.load_weights(os.path.expanduser("~/.keras/datasets/weights/cg"))
+        else:
+            ae_url = "https://docclean.s3.us-east-2.amazonaws.com/ae_weights.tar.gz"
+            tf.keras.utils.get_file("ae_weights", ae_url, untar=True)
+            model.load_weights(os.path.expanduser("~/.keras/datasets/weights/ae"))
+
+    else:
+        model.load_weights(args.weights)
 
     input_img_list = glob.glob(f"{args.data_dir} + '/*png")
 

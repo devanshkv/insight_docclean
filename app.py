@@ -1,5 +1,8 @@
+import os
+
 import numpy as np
 import streamlit as st
+import tensorflow as tf
 from PIL import Image
 
 try:
@@ -29,11 +32,16 @@ if uploaded_file:
     if model == 'CycleGAN':
         from tensorflow_examples.models.pix2pix import pix2pix
 
+        cg_url = "https://docclean.s3.us-east-2.amazonaws.com/cg_weights.tar.gz"
         model = pix2pix.unet_generator(3, norm_type='instancenorm')
-        model.load_weights("weights/cg")
+        tf.keras.utils.get_file("cg_weights", cg_url, untar=True)
+        model.load_weights(os.path.expanduser("~/.keras/datasets/weights/cg"))
     else:
+        ae_url = "https://docclean.s3.us-east-2.amazonaws.com/ae_weights.tar.gz"
+
         model = docclean.autoencoder.Autoencoder().autoencoder_model
-        model.load_weights("weights/ae")
+        tf.keras.utils.get_file("ae_weights", ae_url, untar=True)
+        model.load_weights(os.path.expanduser("~/.keras/datasets/weights/ae"))
 
     im = ImageMosaic(input_file)
     batches = im.make_patches()
