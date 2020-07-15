@@ -82,7 +82,6 @@ class CycleGan:
         loss = tf.reduce_mean(tf.abs(real_image - same_image))
         return self.LAMBDA * 0.5 * loss
 
-    @tf.function
     def train_step(self, real_x, real_y):
         """
         A single training step
@@ -166,6 +165,7 @@ class CycleGan:
             epochs (int): Number of epochs to run
 
         """
+        self.train_step = tf.function(self.train_step)
         for epoch in tqdm.tqdm(range(epochs), leave=False):
             for image_x, image_y in tqdm.tqdm(tf.data.Dataset.zip((dirty_images, clean_images)), leave=False):
                 self.train_step(image_x, image_y)
