@@ -24,11 +24,19 @@ class CycleGan:
 
         output_channels = 3
         logger.info("Creating Generators and Discriminators")
-        self.generator_g = pix2pix.unet_generator(output_channels, norm_type='instancenorm')
-        self.generator_f = pix2pix.unet_generator(output_channels, norm_type='instancenorm')
+        self.generator_g = pix2pix.unet_generator(
+            output_channels, norm_type="instancenorm"
+        )
+        self.generator_f = pix2pix.unet_generator(
+            output_channels, norm_type="instancenorm"
+        )
 
-        self.discriminator_x = pix2pix.discriminator(norm_type='instancenorm', target=False)
-        self.discriminator_y = pix2pix.discriminator(norm_type='instancenorm', target=False)
+        self.discriminator_x = pix2pix.discriminator(
+            norm_type="instancenorm", target=False
+        )
+        self.discriminator_y = pix2pix.discriminator(
+            norm_type="instancenorm", target=False
+        )
 
         logger.info("Setting up the optimizers")
 
@@ -42,20 +50,24 @@ class CycleGan:
         self.LAMBDA = 10
 
         if checkpoint_path is None:
-            self.checkpoint_path = '..'
+            self.checkpoint_path = ".."
         else:
             self.checkpoint_path = checkpoint_path
 
-        self.ckpt = tf.train.Checkpoint(generator_g=self.generator_g,
-                                        generator_f=self.generator_f,
-                                        discriminator_x=self.discriminator_x,
-                                        discriminator_y=self.discriminator_y,
-                                        generator_g_optimizer=self.generator_g_optimizer,
-                                        generator_f_optimizer=self.generator_f_optimizer,
-                                        discriminator_x_optimizer=self.discriminator_x_optimizer,
-                                        discriminator_y_optimizer=self.discriminator_y_optimizer)
+        self.ckpt = tf.train.Checkpoint(
+            generator_g=self.generator_g,
+            generator_f=self.generator_f,
+            discriminator_x=self.discriminator_x,
+            discriminator_y=self.discriminator_y,
+            generator_g_optimizer=self.generator_g_optimizer,
+            generator_f_optimizer=self.generator_f_optimizer,
+            discriminator_x_optimizer=self.discriminator_x_optimizer,
+            discriminator_y_optimizer=self.discriminator_y_optimizer,
+        )
 
-        self.ckpt_manager = tf.train.CheckpointManager(self.ckpt, self.checkpoint_path, max_to_keep=5)
+        self.ckpt_manager = tf.train.CheckpointManager(
+            self.ckpt, self.checkpoint_path, max_to_keep=5
+        )
 
         self.restore_checkpoint = restore_checkpoint
 
@@ -63,7 +75,7 @@ class CycleGan:
             # if a checkpoint exists, restore the latest checkpoint.
             if self.ckpt_manager.latest_checkpoint:
                 self.ckpt.restore(self.ckpt_manager.latest_checkpoint)
-                print('Latest checkpoint restored!!')
+                print("Latest checkpoint restored!!")
 
     def discriminator_loss(self, real, generated):
         real_loss = self.loss_obj(tf.ones_like(real), real)
@@ -119,40 +131,63 @@ class CycleGan:
             gen_g_loss = self.generator_loss(disc_fake_y)
             gen_f_loss = self.generator_loss(disc_fake_x)
 
-            total_cycle_loss = self.calc_cycle_loss(real_x, cycled_x) + self.calc_cycle_loss(real_y, cycled_y)
+            total_cycle_loss = self.calc_cycle_loss(
+                real_x, cycled_x
+            ) + self.calc_cycle_loss(real_y, cycled_y)
 
             # Total generator loss = adversarial loss + cycle loss
-            total_gen_g_loss = gen_g_loss + total_cycle_loss + self.identity_loss(real_y, same_y)
-            total_gen_f_loss = gen_f_loss + total_cycle_loss + self.identity_loss(real_x, same_x)
+            total_gen_g_loss = (
+                gen_g_loss + total_cycle_loss + self.identity_loss(real_y, same_y)
+            )
+            total_gen_f_loss = (
+                gen_f_loss + total_cycle_loss + self.identity_loss(real_x, same_x)
+            )
 
             disc_x_loss = self.discriminator_loss(disc_real_x, disc_fake_x)
             disc_y_loss = self.discriminator_loss(disc_real_y, disc_fake_y)
 
         # Calculate the gradients for generator and discriminator
-        self.generator_g_gradients = tape.gradient(total_gen_g_loss,
-                                                   self.generator_g.trainable_variables)
-        self.generator_f_gradients = tape.gradient(total_gen_f_loss,
-                                                   self.generator_f.trainable_variables)
+        self.generator_g_gradients = tape.gradient(
+            total_gen_g_loss, self.generator_g.trainable_variables
+        )
+        self.generator_f_gradients = tape.gradient(
+            total_gen_f_loss, self.generator_f.trainable_variables
+        )
 
-        self.discriminator_x_gradients = tape.gradient(disc_x_loss,
-                                                       self.discriminator_x.trainable_variables)
-        self.discriminator_y_gradients = tape.gradient(disc_y_loss,
-                                                       self.discriminator_y.trainable_variables)
+        self.discriminator_x_gradients = tape.gradient(
+            disc_x_loss, self.discriminator_x.trainable_variables
+        )
+        self.discriminator_y_gradients = tape.gradient(
+            disc_y_loss, self.discriminator_y.trainable_variables
+        )
 
         # Apply the gradients to the optimizer
-        self.generator_g_optimizer.apply_gradients(zip(self.generator_g_gradients,
-                                                       self.generator_g.trainable_variables))
+        self.generator_g_optimizer.apply_gradients(
+            zip(self.generator_g_gradients, self.generator_g.trainable_variables)
+        )
 
-        self.generator_f_optimizer.apply_gradients(zip(self.generator_f_gradients,
-                                                       self.generator_f.trainable_variables))
+        self.generator_f_optimizer.apply_gradients(
+            zip(self.generator_f_gradients, self.generator_f.trainable_variables)
+        )
 
-        self.discriminator_x_optimizer.apply_gradients(zip(self.discriminator_x_gradients,
-                                                           self.discriminator_x.trainable_variables))
+        self.discriminator_x_optimizer.apply_gradients(
+            zip(
+                self.discriminator_x_gradients, self.discriminator_x.trainable_variables
+            )
+        )
 
-        self.discriminator_y_optimizer.apply_gradients(zip(self.discriminator_y_gradients,
-                                                           self.discriminator_y.trainable_variables))
+        self.discriminator_y_optimizer.apply_gradients(
+            zip(
+                self.discriminator_y_gradients, self.discriminator_y.trainable_variables
+            )
+        )
 
-    def train(self, dirty_images: tf.data.Dataset, clean_images: tf.data.Dataset, epochs: int = 50):
+    def train(
+        self,
+        dirty_images: tf.data.Dataset,
+        clean_images: tf.data.Dataset,
+        epochs: int = 50,
+    ):
         """
         Training function.
 
@@ -167,9 +202,15 @@ class CycleGan:
         """
         self.train_step = tf.function(self.train_step)
         for epoch in tqdm.tqdm(range(epochs), leave=False):
-            for image_x, image_y in tqdm.tqdm(tf.data.Dataset.zip((dirty_images, clean_images)), leave=False):
+            for image_x, image_y in tqdm.tqdm(
+                tf.data.Dataset.zip((dirty_images, clean_images)), leave=False
+            ):
                 self.train_step(image_x, image_y)
 
             if (epoch + 1) % 5 == 0:
                 ckpt_save_path = self.ckpt_manager.save()
-                print('Saving checkpoint for epoch {} at {}'.format(epoch + 1, ckpt_save_path))
+                print(
+                    "Saving checkpoint for epoch {} at {}".format(
+                        epoch + 1, ckpt_save_path
+                    )
+                )

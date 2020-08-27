@@ -41,7 +41,7 @@ def unpatchify(patches: np.ndarray, imsize: Tuple[int, int]):
 
     for i, j in product(range(n_h), range(n_w)):
         patch = patches[i, j]
-        image[(i * s_h):(i * s_h) + p_h, (j * s_w):(j * s_w) + p_w] += patch
-        divisor[(i * s_h):(i * s_h) + p_h, (j * s_w):(j * s_w) + p_w] += 1
+        image[(i * s_h) : (i * s_h) + p_h, (j * s_w) : (j * s_w) + p_w] += patch
+        divisor[(i * s_h) : (i * s_h) + p_h, (j * s_w) : (j * s_w) + p_w] += 1
 
     return image / divisor

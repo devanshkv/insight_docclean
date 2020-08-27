@@ -7,6 +7,7 @@
 [![codecov](https://codecov.io/gh/devanshkv/insight_docclean/branch/master/graph/badge.svg?style=flat-square)](https://codecov.io/gh/devanshkv/insight_docclean)
 ![Python application](https://github.com/devanshkv/insight_docclean/workflows/Python%20application/badge.svg?style=flat-square)
 [![Twitter](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fdevanshkv%2Finsight_docclean)](https://twitter.com/devanshkv)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 
 
 Clean your document images with crumpled backgrounds, strains and folds with Deep Neural Networks.

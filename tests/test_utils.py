@@ -9,8 +9,8 @@ import docclean
 
 @pytest.fixture(scope="session", autouse=True)
 def png_file(tmpdir_factory):
-    temp_dirty_path = str(tmpdir_factory.mktemp("train")) + '/23.png'
-    temp_clean_path = str(tmpdir_factory.mktemp("train_cleaned")) + '/23.png'
+    temp_dirty_path = str(tmpdir_factory.mktemp("train")) + "/23.png"
+    temp_clean_path = str(tmpdir_factory.mktemp("train_cleaned")) + "/23.png"
     url = "https://storage.googleapis.com/kaggle-competitions/kaggle/4406/media/23.png"
     urlretrieve(url, temp_dirty_path)
     urlretrieve(url, temp_clean_path)
@@ -38,7 +38,10 @@ def test_get_kaggle_data(png_file):
 
 
 def test_normalize():
-    data = tf.cast(tf.random.uniform(shape=(256, 256, 3), minval=0, maxval=255, dtype=tf.int32), tf.uint8)
+    data = tf.cast(
+        tf.random.uniform(shape=(256, 256, 3), minval=0, maxval=255, dtype=tf.int32),
+        tf.uint8,
+    )
     data = docclean.utils.normalize(data)
     assert tf.reduce_max(data) < 1.1
     assert tf.reduce_min(data) > -1.1
@@ -57,8 +60,12 @@ def test_kaggle_crop_and_augment():
 
 
 def test_kaggle_paired_augment():
-    data_clean = tf.random.uniform(shape=(256, 256, 3), minval=-1, maxval=1, dtype=tf.float32)
-    data_dirty = tf.random.uniform(shape=(256, 256, 3), minval=-1, maxval=1, dtype=tf.float32)
+    data_clean = tf.random.uniform(
+        shape=(256, 256, 3), minval=-1, maxval=1, dtype=tf.float32
+    )
+    data_dirty = tf.random.uniform(
+        shape=(256, 256, 3), minval=-1, maxval=1, dtype=tf.float32
+    )
     aug_clean, aug_dirty = docclean.utils.kaggle_paired_augment(data_clean, data_dirty)
     assert not tf.reduce_all(tf.math.equal(data_dirty, aug_dirty))
     assert not tf.reduce_all(tf.math.equal(data_clean, aug_clean))

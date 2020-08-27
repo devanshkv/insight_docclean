@@ -45,7 +45,10 @@ def get_kaggle_paired_data(fname: str) -> Tuple[tf.Tensor, tf.Tensor]:
     fname = tf.strings.regex_replace(fname, "train", "train_cleaned")
     img = tf.io.read_file(fname)
     predict_img = tf.io.decode_png(img, dtype=tf.uint8)
-    img, predict_img = tf.cast(train_img, tf.float32) / 255, tf.cast(predict_img, tf.float32) / 255
+    img, predict_img = (
+        tf.cast(train_img, tf.float32) / 255,
+        tf.cast(predict_img, tf.float32) / 255,
+    )
     img = tf.image.resize_with_pad(img, 512, 512, antialias=True)
     predict_img = tf.image.resize_with_pad(predict_img, 512, 512, antialias=True)
     return tf.concat([img] * 3, axis=-1), tf.concat([predict_img] * 3, axis=-1)
@@ -87,8 +90,13 @@ def normalize(image: tf.Tensor) -> tf.Tensor:
     return image
 
 
-def books_crop_and_augment(image: tf.Tensor, size: Tuple[int, int] = (256, 256), num_boxes: int = 1,
-                           rotate: bool = True, flips: bool = True) -> tf.Tensor:
+def books_crop_and_augment(
+    image: tf.Tensor,
+    size: Tuple[int, int] = (256, 256),
+    num_boxes: int = 1,
+    rotate: bool = True,
+    flips: bool = True,
+) -> tf.Tensor:
     """
     Augments the book pages by zooming, cropping, rotating and fliiping
 
@@ -118,7 +126,9 @@ def books_crop_and_augment(image: tf.Tensor, size: Tuple[int, int] = (256, 256),
     x2 = y2 = 0.5 + (0.5 * scale)
     boxes = tf.convert_to_tensor([x1, y1, x2, y2])
     boxes = tf.reshape(boxes, shape=(num_boxes, 4))
-    box_indices = tf.random.uniform(shape=(num_boxes,), minval=0, maxval=num_boxes, dtype=tf.int32)
+    box_indices = tf.random.uniform(
+        shape=(num_boxes,), minval=0, maxval=num_boxes, dtype=tf.int32
+    )
     combined = tf.image.crop_and_resize(combined, boxes, box_indices, size)
 
     if rotate:
@@ -130,8 +140,12 @@ def books_crop_and_augment(image: tf.Tensor, size: Tuple[int, int] = (256, 256),
     return combined[0]
 
 
-def kaggle_crop_and_augment(image: tf.Tensor, size: Tuple[int, int] = (256, 256), rotate: bool = True,
-                            flips: bool = True) -> tf.Tensor:
+def kaggle_crop_and_augment(
+    image: tf.Tensor,
+    size: Tuple[int, int] = (256, 256),
+    rotate: bool = True,
+    flips: bool = True,
+) -> tf.Tensor:
     """
     Augments the book pages by zooming, cropping, rotating and fliiping
 
@@ -162,8 +176,13 @@ def kaggle_crop_and_augment(image: tf.Tensor, size: Tuple[int, int] = (256, 256)
     return combined
 
 
-def kaggle_paired_augment(dirty: tf.Tensor, clean: tf.Tensor, size: Tuple[int, int] = (256, 256), rotate: bool = True,
-                          flips: bool = True) -> tf.Tensor:
+def kaggle_paired_augment(
+    dirty: tf.Tensor,
+    clean: tf.Tensor,
+    size: Tuple[int, int] = (256, 256),
+    rotate: bool = True,
+    flips: bool = True,
+) -> tf.Tensor:
     """
     Augments the book pages by zooming, cropping, rotating and fliiping
 
@@ -209,7 +228,7 @@ def normed_to_uint8(image: np.ndarray) -> np.ndarray:
 
         np.ndarray: uint8 scaled array
     """
-    return (255 * (image - image.min()) / (image.max() - image.min())).astype('uint8')
+    return (255 * (image - image.min()) / (image.max() - image.min())).astype("uint8")
 
 
 class ImageMosaic:
@@ -229,7 +248,7 @@ class ImageMosaic:
     """
 
     def __init__(self, image: np.ndarray):
-        self.image = self.normalise(image.astype('float'))
+        self.image = self.normalise(image.astype("float"))
         self.input_shape = image.shape
         self.extended_image = self.extend_image()
 
@@ -278,8 +297,10 @@ class ImageMosaic:
             np.ndarray: Numpy array of extended image
 
         """
-        extended_image = np.ones((*self.get_new_shape, self.input_shape[-1]), dtype=self.image.dtype)
-        extended_image[:self.input_shape[0], :self.input_shape[1]] = self.image
+        extended_image = np.ones(
+            (*self.get_new_shape, self.input_shape[-1]), dtype=self.image.dtype
+        )
+        extended_image[: self.input_shape[0], : self.input_shape[1]] = self.image
         return extended_image
 
     def make_patches(self):
@@ -293,7 +314,9 @@ class ImageMosaic:
         """
         patches = []
         for ii in range(self.input_shape[-1]):
-            patches.append(patchify.patchify(self.extended_image[:, :, ii], (256, 256), 128))
+            patches.append(
+                patchify.patchify(self.extended_image[:, :, ii], (256, 256), 128)
+            )
         patches = np.stack(patches, axis=-1)
         self.patch_shape = patches.shape
         return patches.reshape(self.patch_shape[0] * self.patch_shape[1], 256, 256, 3)
@@ -313,6 +336,10 @@ class ImageMosaic:
         patches = patches.reshape(self.patch_shape)
         original_image = []
         for ii in range(self.input_shape[-1]):
-            original_image.append(patchify.unpatchify(patches[:, :, :, :, ii], self.extended_image.shape[:-1]))
+            original_image.append(
+                patchify.unpatchify(
+                    patches[:, :, :, :, ii], self.extended_image.shape[:-1]
+                )
+            )
         original_image = np.stack(original_image, axis=-1)
-        return original_image[:self.input_shape[0], :self.input_shape[1]]
+        return original_image[: self.input_shape[0], : self.input_shape[1]]
