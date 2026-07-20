@@ -1,6 +1,6 @@
 tensorflow-gpu>=2.1
 git+https://github.com/tensorflow/examples.git
-tqdm>=4.44.1
+tqdm>=4.69.0
 numpy>=1.18.1
 streamlit>=0.61.0
 matplotlib>=3.1.3
